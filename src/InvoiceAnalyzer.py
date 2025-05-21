@@ -13,7 +13,6 @@ class InvoiceAnalyzer:
         )
         self.count = 0
 
-    
     def __analyze_file(self, path) -> Invoice:
         with open(path, "rb") as f:
             data = f.read()
@@ -32,27 +31,26 @@ class InvoiceAnalyzer:
             due_date=invoice.fields.get("DueDate").value_date if invoice.fields.get("DueDate") else None
         )
 
-    
     def analyze(self, invoice_paths):
         wb = Workbook()
         ws = wb.active
         ws.title = f"Invoices Compiled {self.count}"
-        ws.append(["Line Item", 
-                   "Vendor Name", 
-                   "Invoice ID", 
-                   "Quantity", 
-                   "Invoice Total", 
+        ws.append(["Line Item",
+                   "Vendor Name",
+                   "Invoice ID",
+                   "Quantity",
+                   "Invoice Total",
                    "Invoice Date",
                    "Due Date"])
 
         for idx, path in enumerate(invoice_paths):
             print(f"--Analyzing Invoice #{idx+1} {path}--")
             invoice = self.__analyze_file(path)
-            ws.append([idx+1, 
-                       invoice.vendor_name, 
-                       invoice.id, 
-                       invoice.quantity, 
-                       invoice.total, 
+            ws.append([idx+1,
+                       invoice.vendor_name,
+                       invoice.id,
+                       invoice.quantity,
+                       invoice.total,
                        invoice.invoice_date,
                        invoice.due_date])
             print(f"-------------compltete---------------")
@@ -76,7 +74,3 @@ class InvoiceAnalyzer:
         wb.save(f"output/invoices_compiled_{self.count}.xlsx")
         print("--PROCESS SUCCESS--")
         self.count += 1
-
-
-    
-    
